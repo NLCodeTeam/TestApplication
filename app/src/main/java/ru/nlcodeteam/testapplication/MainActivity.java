@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        flag = true;
 
         mEmail = findViewById(R.id.et_main_activity_email);
         mNotes = findViewById(R.id.et_main_activity_notes);
