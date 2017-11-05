@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText mEmail;
     private EditText mNotes;
     private Button mSend;
+    private boolean flag;
 
 
     @Override
