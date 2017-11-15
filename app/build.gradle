@@ -31,7 +31,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-
     // Работа с сетью
     //Retrofit
     compile 'com.squareup.retrofit2:retrofit:2.+'
@@ -43,7 +42,10 @@ dependencies {
     compile 'com.google.code.gson:gson:2.+'
     compile 'com.squareup.retrofit2:converter-gson:2.+'
 
-
+    //RxJava
+    compile 'io.reactivex:rxjava:1.1.2'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
 
     // Загрузка картинок по сети
     compile 'com.github.bumptech.glide:glide:4.2.0'
@@ -54,7 +56,7 @@ dependencies {
 
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
-     // биндинг view
+    // биндинг view
     compile 'com.jakewharton:butterknife:8.8.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'

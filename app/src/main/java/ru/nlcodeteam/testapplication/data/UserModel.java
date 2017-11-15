@@ -2,11 +2,13 @@ package ru.nlcodeteam.testapplication.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by eldar on 29.10.2017.
  */
 
-public class UserModel {
+public class UserModel implements Serializable {
 
     @SerializedName("id")
     public int id;

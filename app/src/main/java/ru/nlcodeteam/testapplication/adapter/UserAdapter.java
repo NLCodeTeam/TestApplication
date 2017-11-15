@@ -4,9 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ru.nlcodeteam.testapplication.R;
@@ -22,7 +20,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
     private OnItemClickListener mListener;
 
 
-    public UserAdapter(ArrayList<UserModel> list, OnItemClickListener mListener) {
+    public UserAdapter(List<UserModel> list, OnItemClickListener mListener) {
         this.list = list;
         this.mListener = mListener;
     }
