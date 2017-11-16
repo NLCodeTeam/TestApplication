@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import ru.nlcodeteam.testapplication.R;
+import ru.nlcodeteam.testapplication.adapter.holder.UserHolder;
 import ru.nlcodeteam.testapplication.data.UserModel;
 
 /**

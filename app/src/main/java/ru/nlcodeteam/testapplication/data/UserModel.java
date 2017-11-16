@@ -27,14 +27,14 @@ public class UserModel implements Serializable {
     @SerializedName("company")
     public Company company;
 
-    public static class Geo {
+    public static class Geo implements Serializable {
         @SerializedName("lat")
         public String lat;
         @SerializedName("lng")
         public String lng;
     }
 
-    public static class Address {
+    public static class Address implements Serializable{
         @SerializedName("street")
         public String street;
         @SerializedName("suite")
@@ -47,7 +47,7 @@ public class UserModel implements Serializable {
         public Geo geo;
     }
 
-    public static class Company {
+    public static class Company implements Serializable{
         @SerializedName("name")
         public String name;
         @SerializedName("catchPhrase")
