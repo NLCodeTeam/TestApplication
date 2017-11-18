@@ -22,6 +22,11 @@
         <activity
             android:name=".DetailActivity"
             android:label="@string/title_activity_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".PhotoActivity" />
+        <activity
+            android:name=".PostEditActivity"
+            android:label="@string/title_activity_post_edit"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

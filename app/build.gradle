@@ -49,8 +49,7 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
 
     // Загрузка картинок по сети
-    compile 'com.github.bumptech.glide:glide:4.2.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     // листы
     compile 'com.android.support:recyclerview-v7:26+'

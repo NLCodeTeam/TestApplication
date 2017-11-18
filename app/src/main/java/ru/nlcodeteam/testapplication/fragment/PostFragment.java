@@ -29,7 +29,7 @@ import ru.nlcodeteam.testapplication.TestApp;
 import ru.nlcodeteam.testapplication.Util;
 import ru.nlcodeteam.testapplication.adapter.OnItemClickListener;
 import ru.nlcodeteam.testapplication.adapter.PostsAdapter;
-import ru.nlcodeteam.testapplication.data.PostModel;
+import ru.nlcodeteam.testapplication.data.model.PostModel;
 import ru.nlcodeteam.testapplication.network.TypicodeService;
 
 /**

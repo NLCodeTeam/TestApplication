@@ -9,10 +9,10 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import ru.nlcodeteam.testapplication.data.AlbumModel;
-import ru.nlcodeteam.testapplication.data.PhotoModel;
-import ru.nlcodeteam.testapplication.data.PostModel;
-import ru.nlcodeteam.testapplication.data.UserModel;
+import ru.nlcodeteam.testapplication.data.model.AlbumModel;
+import ru.nlcodeteam.testapplication.data.model.PhotoModel;
+import ru.nlcodeteam.testapplication.data.model.PostModel;
+import ru.nlcodeteam.testapplication.data.model.UserModel;
 
 /**
  * Created by eldar on 29.10.2017.

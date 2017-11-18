@@ -10,7 +10,7 @@ import java.util.List;
 
 import ru.nlcodeteam.testapplication.R;
 import ru.nlcodeteam.testapplication.adapter.holder.PostHolder;
-import ru.nlcodeteam.testapplication.data.PostModel;
+import ru.nlcodeteam.testapplication.data.model.PostModel;
 
 /**
  * Created by eldar on 29.10.2017.

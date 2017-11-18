@@ -10,7 +10,7 @@ import java.util.List;
 
 import ru.nlcodeteam.testapplication.R;
 import ru.nlcodeteam.testapplication.adapter.holder.TextViewHolder;
-import ru.nlcodeteam.testapplication.data.AlbumModel;
+import ru.nlcodeteam.testapplication.data.model.AlbumModel;
 
 /**
  * Created by eldar on 29.10.2017.

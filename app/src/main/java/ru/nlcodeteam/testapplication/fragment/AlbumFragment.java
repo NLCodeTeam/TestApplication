@@ -20,12 +20,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import ru.nlcodeteam.testapplication.PhotoActivity;
 import ru.nlcodeteam.testapplication.R;
 import ru.nlcodeteam.testapplication.TestApp;
 import ru.nlcodeteam.testapplication.Util;
 import ru.nlcodeteam.testapplication.adapter.AlbumsAdapter;
 import ru.nlcodeteam.testapplication.adapter.OnItemClickListener;
-import ru.nlcodeteam.testapplication.data.AlbumModel;
+import ru.nlcodeteam.testapplication.data.model.AlbumModel;
 import ru.nlcodeteam.testapplication.network.TypicodeService;
 
 /**

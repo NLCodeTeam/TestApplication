@@ -9,7 +9,7 @@ import java.util.List;
 
 import ru.nlcodeteam.testapplication.R;
 import ru.nlcodeteam.testapplication.adapter.holder.UserHolder;
-import ru.nlcodeteam.testapplication.data.UserModel;
+import ru.nlcodeteam.testapplication.data.model.UserModel;
 
 /**
  * Created by el on 14.11.17.

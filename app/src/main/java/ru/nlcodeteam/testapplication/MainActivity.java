@@ -18,7 +18,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import ru.nlcodeteam.testapplication.adapter.OnItemClickListener;
 import ru.nlcodeteam.testapplication.adapter.UserAdapter;
-import ru.nlcodeteam.testapplication.data.UserModel;
+import ru.nlcodeteam.testapplication.data.model.UserModel;
 import ru.nlcodeteam.testapplication.network.TypicodeService;
 
 public class MainActivity extends AppCompatActivity implements OnItemClickListener {

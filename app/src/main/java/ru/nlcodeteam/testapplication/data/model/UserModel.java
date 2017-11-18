@@ -1,4 +1,4 @@
-package ru.nlcodeteam.testapplication.data;
+package ru.nlcodeteam.testapplication.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
