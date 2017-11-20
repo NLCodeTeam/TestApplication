@@ -2,10 +2,14 @@ package ru.nlcodeteam.testapplication;
 
 import android.app.Application;
 
+import java.lang.ref.WeakReference;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.nlcodeteam.testapplication.data.database.DatabaseStorage;
+import ru.nlcodeteam.testapplication.data.preference.PreferenceUtil;
 import ru.nlcodeteam.testapplication.network.TypicodeService;
 import rx.schedulers.Schedulers;
 
@@ -15,6 +19,8 @@ import rx.schedulers.Schedulers;
  */
 
 public class TestApp extends Application {
+
+
 
     @Override
     public void onCreate() {
@@ -36,4 +42,18 @@ public class TestApp extends Application {
                 .build();
     }
 
+    public DatabaseStorage getStorage() {
+        return DatabaseStorage.getInstance(new WeakReference<>(getApplicationContext()));
+    }
+
+    public PreferenceUtil getPreference() {
+        return PreferenceUtil.getInstance(new WeakReference<>(getApplicationContext()));
+    }
+
+    public boolean areRelevantData() {
+        String today = Util.getToday();
+        String savedDate = getPreference().getDate();
+
+        return today.compareTo(savedDate) == 0;
+    }
 }

@@ -12,6 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,21 @@ public class PostFragment extends Fragment implements OnItemClickListener {
         super.onActivityCreated(savedInstanceState);
 
         TestApp app = (TestApp) getActivity().getApplication();
+        if (app.getStorage().postsAreLoaded(String.valueOf(userId)))
+            loadPostsLocal(app);
+        else
+            loadPostsRemote(app);
+
+    }
+
+    private void loadPostsLocal(TestApp app) {
+        Log.d(getActivity().getPackageName(),"loadPostsLocal");
+       mPosts = app.getStorage().getPostsByUserId(String.valueOf(userId));
+       refreshData();
+    }
+
+    private void loadPostsRemote(final TestApp app) {
+        Log.d(getActivity().getPackageName(),"loadPostsRemote");
         Retrofit retrofit = app.getRetrofit();
         mService = app.getRestAPI(retrofit);
 
@@ -71,6 +87,8 @@ public class PostFragment extends Fragment implements OnItemClickListener {
             public void onResponse(Call<List<PostModel>> call, Response<List<PostModel>> response) {
                 if (response.isSuccessful()) {
                     mPosts = response.body();
+                    app.getStorage().savePosts(mPosts);
+                    app.getStorage().updatePostsLoadedByUserId(String.valueOf(userId));
                     refreshData();
                 }  else
                     showMessage("Error of loading posts");
@@ -81,7 +99,6 @@ public class PostFragment extends Fragment implements OnItemClickListener {
                   showMessage(t.getMessage());
             }
         });
-
     }
 
     @Override
@@ -102,11 +119,14 @@ public class PostFragment extends Fragment implements OnItemClickListener {
 
 
     private void refreshData() {
-        mAdapter = new PostsAdapter(mPosts,this);
-        mRecyclerViewPosts.setHasFixedSize(true);
-        mRecyclerViewPosts.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerViewPosts.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
-        mRecyclerViewPosts.setAdapter(mAdapter);
+        if (mPosts != null) {
+            mAdapter = new PostsAdapter(mPosts,this);
+            mRecyclerViewPosts.setHasFixedSize(true);
+            mRecyclerViewPosts.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mRecyclerViewPosts.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+            mRecyclerViewPosts.setAdapter(mAdapter);
+        }
+
     }
 
     private void showMessage(String message) {

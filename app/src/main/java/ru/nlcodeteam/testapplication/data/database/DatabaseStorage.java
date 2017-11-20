@@ -14,6 +14,25 @@ import ru.nlcodeteam.testapplication.data.model.AlbumModel;
 import ru.nlcodeteam.testapplication.data.model.PostModel;
 import ru.nlcodeteam.testapplication.data.model.UserModel;
 
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.DATABASE_NAME;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.DATABASE_VERSION;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.FIELD_ADDRESS;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.FIELD_ALBUMS_LOADED;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.FIELD_CONTENT;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.FIELD_EMAIL;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.FIELD_ID;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.FIELD_NAME;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.FIELD_POSTS_LOADED;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.FIELD_TITLE;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.FIELD_USER_ID;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.TABLE_ALBUMS;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.TABLE_POSTS;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.TABLE_USERS;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.createAlbumTableQuery;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.createPostTableQuery;
+import static ru.nlcodeteam.testapplication.data.database.DatabaseContract.createUserTableQuery;
+
+
 /**
  * Created by el on 18.11.17.
  */
@@ -30,57 +49,7 @@ public class DatabaseStorage extends SQLiteOpenHelper{
         return ourInstance;
     }
 
-    // database
-    public static final String DATABASE_NAME = "Typicode.db";
-    public static final int DATABASE_VERSION = 1;
 
-    // tables
-    public static final String TABLE_USERS="Users";
-    public static final String TABLE_ALBUMS="Albums";
-    public static final String TABLE_POSTS="Posts";
-
-
-    // user fields
-    public static final String FIELD_ID="Id";
-    public static final String FIELD_NAME="Name";
-    public static final String FIELD_ADDRESS="Address";
-    public static final String FIELD_EMAIL="Email";
-    public static final String FIELD_ALBUMS_LOADED="Albums_loaded";
-    public static final String FIELD_POSTS_LOADED="Posts_loaded";
-
-    // albums
-    public static final String FIELD_USER_ID="User_id";
-    public static final String FIELD_TITLE="Title";
-
-    // posts
-    public static final String FIELD_CONTENT="Content";
-
-
-
-    public static String createUserTableQuery() {
-        return "CREATE TABLE " + TABLE_USERS + "("
-                + FIELD_ID + " INTEGER, "
-                + FIELD_NAME+" TEXT NULL, "
-                + FIELD_ADDRESS+" TEXT NULL, "
-                + FIELD_EMAIL+ " TEXT NULL,"
-                + FIELD_ALBUMS_LOADED + " INTEGER, "
-                + FIELD_POSTS_LOADED + "INTEGER)";
-    }
-
-    public static String createAlbumTableQuery() {
-        return "CREATE TABLE " + TABLE_ALBUMS+ "("
-                + FIELD_ID + " INTEGER, "
-                + FIELD_USER_ID+" INTEGER, "
-                + FIELD_TITLE+" TEXT NULL)";
-    }
-
-    public static String createPostTableQuery() {
-        return "CREATE TABLE " + TABLE_ALBUMS+ "("
-                + FIELD_ID + " INTEGER, "
-                + FIELD_USER_ID+" INTEGER, "
-                + FIELD_TITLE+" TEXT NULL, "
-                + FIELD_CONTENT+" TEXT NULL)";
-    }
 
     private DatabaseStorage(WeakReference<Context> context) {
         super(context.get(), DATABASE_NAME, null, DATABASE_VERSION);
@@ -119,10 +88,10 @@ public class DatabaseStorage extends SQLiteOpenHelper{
 
         for (UserModel user : list) {
             values = new ContentValues();
-            values.put(FIELD_ID,user.id);
-            values.put(FIELD_NAME, user.name);
-            values.put(FIELD_ADDRESS, user.address.street);
-            values.put(FIELD_EMAIL, user.email);
+            values.put(FIELD_ID,user.getId());
+            values.put(FIELD_NAME, user.getName());
+            values.put(FIELD_ADDRESS, user.getAddress().getStreet());
+            values.put(FIELD_EMAIL, user.getEmail());
             values.put(FIELD_ALBUMS_LOADED,0);
             values.put(FIELD_POSTS_LOADED,0);
 
@@ -145,10 +114,11 @@ public class DatabaseStorage extends SQLiteOpenHelper{
             do {
 
                 user = new UserModel();
-                user.id = cursor.getInt(0);
-                user.name = cursor.getString(1);
-                user.address.street = cursor.getString(2);
-                user.email = cursor.getString(3);
+
+                user.setId(cursor.getInt(0));
+                user.setName(cursor.getString(1));
+                user.getAddress().setStreet(cursor.getString(2));
+                user.setEmail(cursor.getString(3));
 
                 users.add(user);
             }
@@ -323,6 +293,16 @@ public class DatabaseStorage extends SQLiteOpenHelper{
 
         closeDatabase(database);
         return count;
+    }
+
+
+    public void clearAll() {
+        String[] tables = {DatabaseContract.TABLE_USERS,DatabaseContract.TABLE_ALBUMS,DatabaseContract.TABLE_POSTS};
+        SQLiteDatabase database = this.getWritableDatabase();
+        for (String table : tables)
+            database.delete(table,null,null);
+
+        closeDatabase(database);
     }
 
 

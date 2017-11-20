@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
@@ -38,7 +39,29 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         setContentView(R.layout.activity_main);
         ButterKnife.bind(MainActivity.this);
 
+        loadUsers();
+    }
+
+    private void loadUsers() {
         TestApp app = (TestApp) getApplication();
+        if (app.areRelevantData()) // проверка загружали ли мы уже сегодня данные?
+            loadUsersLocal(app);
+        else
+        {
+            loadUsersRemote(app);
+        }
+
+    }
+
+
+    private void loadUsersLocal(TestApp app) {
+        Log.d(getPackageName(),"loadUsersLocal");
+        users = app.getStorage().getUsers();
+        refreshData();
+    }
+
+    private void loadUsersRemote(final TestApp app) {
+        Log.d(getPackageName(),"loadUsersRemote");
         Retrofit retrofit = app.getRetrofit();
         mService = app.getRestAPI(retrofit);
 
@@ -49,7 +72,15 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
             public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
                 if (response.isSuccessful()) {
                     users = response.body();
-                    refreshData();
+                    if (users != null) {
+                        app.getStorage().clearAll();
+                        app.getStorage().saveUsers(users); // сохраняем в базу данных пользователей
+                        String today = Util.getToday();
+                        app.getPreference().saveDate(today);
+
+                        refreshData();
+                    }
+
 
                 } else {
                    showMessage("Error of loading users");
@@ -77,9 +108,12 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     }
 
     private void refreshData() {
-        mRecyclerViewUsers.setHasFixedSize(true);
-        mRecyclerViewUsers.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        mAdapter = new UserAdapter(users,this);
-        mRecyclerViewUsers.setAdapter(mAdapter);
+        if (users != null) {
+            mRecyclerViewUsers.setHasFixedSize(true);
+            mRecyclerViewUsers.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            mAdapter = new UserAdapter(users,this);
+            mRecyclerViewUsers.setAdapter(mAdapter);
+        }
+
     }
 }

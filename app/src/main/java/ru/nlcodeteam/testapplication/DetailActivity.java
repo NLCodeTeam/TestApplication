@@ -40,8 +40,8 @@ public class DetailActivity extends AppCompatActivity {
 
         user = (UserModel) getIntent().getSerializableExtra(Util.USER_ID);
         if (user != null) {
-            userId = user.id;
-            toolbar.setTitle(user.name);
+            userId = user.getId();
+            toolbar.setTitle(user.getName());
         }
 
 

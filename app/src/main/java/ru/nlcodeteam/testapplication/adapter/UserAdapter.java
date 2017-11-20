@@ -42,9 +42,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
         final UserModel user = list.get(position);
 
 
-        holder.mName.setText(user.name);
-        holder.mAddress.setText(user.address.street);
-        holder.mEmail.setText(user.email);
+        holder.mName.setText(user.getName());
+        holder.mAddress.setText(user.getAddress().getStreet());
+        holder.mEmail.setText(user.getEmail());
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

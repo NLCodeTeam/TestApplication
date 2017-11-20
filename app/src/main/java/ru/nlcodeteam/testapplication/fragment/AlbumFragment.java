@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,9 +62,27 @@ public class AlbumFragment extends Fragment implements OnItemClickListener {
         super.onActivityCreated(savedInstanceState);
 
         TestApp app = (TestApp) getActivity().getApplication();
+
+        if (app.getStorage().albumsAreLoaded(String.valueOf(userId)))
+            loadAlbumsLocal(app);
+        else
+            loadAlbumsRemote(app);
+
+
+
+    }
+
+    private void loadAlbumsLocal(TestApp app) {
+        Log.d(getActivity().getPackageName(),"loadAlbumsLocal");
+        mAlbums = app.getStorage().getAlbumsByUserId(String.valueOf(userId));
+        refreshData();
+
+    }
+
+    private void loadAlbumsRemote(final TestApp app) {
+        Log.d(getActivity().getPackageName(),"loadAlbumsRemote");
         Retrofit retrofit = app.getRetrofit();
         mService = app.getRestAPI(retrofit);
-
 
 
         Call<List<AlbumModel>> request = mService.getAlbumsByUser(userId);
@@ -72,7 +91,12 @@ public class AlbumFragment extends Fragment implements OnItemClickListener {
             public void onResponse(Call<List<AlbumModel>> call, Response<List<AlbumModel>> response) {
                 if (response.isSuccessful()) {
                     mAlbums = response.body();
-                    refreshData();
+                    if (mAlbums != null) {
+                        app.getStorage().saveAlbums(mAlbums);
+                        app.getStorage().updateAlbumsLoadedByUserId(String.valueOf(userId));
+                        refreshData();
+                    }
+
                 }  else
                     showMessage("Error of loading albums");
             }
@@ -82,9 +106,6 @@ public class AlbumFragment extends Fragment implements OnItemClickListener {
                 showMessage(t.getMessage());
             }
         });
-
-
-
     }
 
 
@@ -97,11 +118,14 @@ public class AlbumFragment extends Fragment implements OnItemClickListener {
     }
 
     private void refreshData() {
-        mAdapter = new AlbumsAdapter(mAlbums,this);
-        mRecyclerViewAlbums.setHasFixedSize(true);
-        mRecyclerViewAlbums.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerViewAlbums.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
-        mRecyclerViewAlbums.setAdapter(mAdapter);
+        if (mAlbums != null) {
+            mAdapter = new AlbumsAdapter(mAlbums,this);
+            mRecyclerViewAlbums.setHasFixedSize(true);
+            mRecyclerViewAlbums.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mRecyclerViewAlbums.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+            mRecyclerViewAlbums.setAdapter(mAdapter);
+        }
+
     }
 
     private void showMessage(String message) {
